@@ -1,7 +1,7 @@
 import logging
 from abstract import _GankBoardBaseObject
 
-class ProjectObject(_GankBoardBaseObject):
+class Project(_GankBoardBaseObject):
     
     def __init__(self, api_key):
         self.api_key = api_key

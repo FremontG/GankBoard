@@ -1,6 +1,6 @@
 from abstract import _GankBoardBaseObject
 
-class TaskObject(_GankBoardBaseObject):
+class Task(_GankBoardBaseObject):
     
     def __init__(self, api_key):
         self.api_key = api_key
