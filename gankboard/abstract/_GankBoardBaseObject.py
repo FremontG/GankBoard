@@ -8,7 +8,7 @@ class _GankBoardBaseObject(ABC):
     url = "http://192.168.1.3/api"
 
     def request(self, method, endpoint, **kwargs):
-        headers = {'Authorization': f'Bearer {self.api_key}'}
+        headers = {'x-api-key': self.api_key}
         try:
             response = requests.request(method, f"{self.url}/{endpoint}", headers=headers, **kwargs)
             response.raise_for_status()

@@ -40,15 +40,6 @@ class TaskObject(_GankBoardBaseObject):
             method="DELETE",
             endpoint=f"tasks/{resource_id}"
         )
-        
-        if status_code != 204:
-            error_message = (
-                f"Échec de la suppression du rapport avec l'ID {resource_id}. "
-                f"Code de statut: {status_code}. Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)  # Lever une exception avec le message d'erreur
-
 
         return status_code, response
 
@@ -62,15 +53,6 @@ class TaskObject(_GankBoardBaseObject):
             json=self._build_task_data(project_id, name, description, dependencies, parent_task, sub_tasks, **kwargs)
         )
 
-        if status_code != 200:
-            error_message = (
-                f"Échec de la modification du rapport avec l'ID {resource_id}. "
-                f"Code de statut: {status_code}. Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)  # Lever une exception avec le message d'erreur
-
-
         return status_code, response
 
     def create(self, project_id, name, description='', dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
@@ -83,12 +65,4 @@ class TaskObject(_GankBoardBaseObject):
             json=self._build_task_data(project_id, name, description, dependencies, parent_task, sub_tasks, **kwargs)
         )
 
-        if status_code != 201:
-            error_message = (
-                f"Échec de la création du rapport. Code de statut: {status_code}. "
-                f"Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)
-        
         return status_code, response

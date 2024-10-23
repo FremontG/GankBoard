@@ -29,15 +29,6 @@ class ReportObject(_GankBoardBaseObject):
             endpoint=f"reports/{resource_id}"
         )
 
-        if status_code != 204:
-            error_message = (
-                f"Échec de la suppression du rapport avec l'ID {resource_id}. "
-                f"Code de statut: {status_code}. Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)  # Lever une exception avec le message d'erreur
-
-
         return status_code, response
 
     def modify(self, resource_id, project_id=None, observation=None):
@@ -49,15 +40,6 @@ class ReportObject(_GankBoardBaseObject):
             endpoint=f"reports/{resource_id}",
             json=self._build_report_data()
         )
-
-        if status_code != 200:
-            error_message = (
-                f"Échec de la modification du rapport avec l'ID {resource_id}. "
-                f"Code de statut: {status_code}. Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)  # Lever une exception avec le message d'erreur
-
 
         return status_code, response
 
@@ -71,11 +53,4 @@ class ReportObject(_GankBoardBaseObject):
             json=self._build_report_data(project_id=project_id, observation=observation, **kwargs)
         )
 
-        if status_code != 201:
-            error_message = (
-                f"Échec de la création du rapport. Code de statut: {status_code}. "
-                f"Détails de la réponse: {response}"
-            )
-            self.logger.error(error_message)  # Loguer l'erreur
-            raise RuntimeError(error_message)
         return status_code, response
