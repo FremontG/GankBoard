@@ -1,0 +1,124 @@
+# Byte-compiled / Python caché
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Dossiers des environnements virtuels
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installateurs de Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Fichiers compilés C / C++
+*.obj
+*.o
+*.lo
+*.la
+*.al
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.la
+*.lo
+
+# Fichiers de test de couverture de code
+.coverage
+.tox/
+.nox/
+.cache
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Journaux et fichiers temporaires
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.swn
+*.swm
+*.~*
+.DS_Store
+Thumbs.db
+
+# Environnements Jupyter Notebook
+.ipynb_checkpoints
+
+# Environnements IDE (Visual Studio Code, PyCharm, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Fichiers spécifiques à un environnement / Système d'exploitation
+*.env
+*.ini
+*.config
+*.cfg
+*.bak
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
+
+# Fichiers générés par `setup.py`
+*.egg-info/
+
+# Caches des bibliothèques
+*.mypy_cache/
+.pyre/
+.pytype/
+cython_debug/
+
+# Fichiers de Docker
+docker-compose.override.yml
+
+# SQLite Database
+*.sqlite3
+
+# PyInstaller
+# Cette balise va exclure tout ce que PyInstaller génère
+# au moment où vous créez une distribution.
+*.manifest
+*.spec
+
+# Exclure les fichiers des tests unitaires
+htmlcov/
+
+# Fichiers de Log et Profiling
+*.log
+*.out
+*.err
+
+# Python profiler logs
+.prof
