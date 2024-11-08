@@ -1,11 +1,9 @@
-from abstract import _GankBoardBaseObject
+import logging
+from ._GankBoardBaseObject import _GankBoardBaseObject
 
 class Task(_GankBoardBaseObject):
-    
-    def __init__(self, api_key):
-        self.api_key = api_key
 
-    def _build_task_data(project_id=None, name=None, description=None, dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
+    def _build_task_data(self, project_id, name, description=None, dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
         """
         Construit les données JSON pour une tâche.
         """
@@ -27,42 +25,65 @@ class Task(_GankBoardBaseObject):
             data["sub_tasks"] = sub_tasks
         else:
             data["sub_tasks"] = []  # Valeur par défaut si non spécifiée
-
+        
         data.update(kwargs)
         return data
 
-
-    def delete(self, resource_id):
+    @classmethod
+    def delete(cls, resource_id):
         """
-        Supprime une tâche par son ID.
+        Supprime une tâche par son ID en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête DELETE pour la tâche avec l'ID {resource_id}")
+        response = cls.request(
             method="DELETE",
             endpoint=f"tasks/{resource_id}"
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la suppression de la tâche avec l'ID {resource_id}: {error_message}")
+            raise RuntimeError(f"Erreur lors de la suppression de la tâche avec l'ID {resource_id}: {error_message}")
 
-    def modify(self, resource_id, project_id, name, description='', dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
+        logging.info(f"Tâche avec l'ID {resource_id} supprimée avec succès.")
+        return response
+
+    @classmethod
+    def modify(cls, resource_id, project_id, name, description='', dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
         """
-        Modifie une tâche existante par son ID.
+        Modifie une tâche existante par son ID en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête PATCH pour modifier la tâche avec l'ID {resource_id}")
+        response = cls.request(
             method="PATCH",
             endpoint=f"tasks/{resource_id}",
-            json=self._build_task_data(project_id, name, description, dependencies, parent_task, sub_tasks, **kwargs)
+            json=cls()._build_task_data(project_id=project_id, name=name, description=description, dependencies=dependencies, parent_task=parent_task, sub_tasks=sub_tasks, **kwargs)
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la modification de la tâche avec l'ID {resource_id}: {error_message}")
+            raise RuntimeError(f"Erreur lors de la modification de la tâche avec l'ID {resource_id}: {error_message}")
 
-    def create(self, project_id, name, description='', dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
+        logging.info(f"Tâche avec l'ID {resource_id} modifiée avec succès.")
+        return response
+
+    @classmethod
+    def create(cls, project_id, name, description='', dependencies=None, parent_task=None, sub_tasks=None, **kwargs):
         """
-        Crée une nouvelle tâche.
+        Crée une nouvelle tâche en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête POST pour créer une nouvelle tâche : {name}")
+        response = cls.request(
             method="POST",
-            endpoint="tasks",
-            json=self._build_task_data(project_id, name, description, dependencies, parent_task, sub_tasks, **kwargs)
+            endpoint="tasks/",
+            json=cls()._build_task_data(project_id=project_id, name=name, description=description, dependencies=dependencies, parent_task=parent_task, sub_tasks=sub_tasks, **kwargs)
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la création de la tâche : {error_message}")
+            raise RuntimeError(f"Erreur lors de la création de la tâche : {error_message}")
+
+        logging.info(f"Tâche '{name}' créée avec succès.")
+        return response

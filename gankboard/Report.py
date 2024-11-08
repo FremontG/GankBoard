@@ -1,13 +1,9 @@
 import logging
-from abstract import _GankBoardBaseObject
+from ._GankBoardBaseObject import _GankBoardBaseObject
 
 class Report(_GankBoardBaseObject):
     
-    def __init__(self, api_key):
-        self.api_key = api_key
-        self.logger = logging.getLogger(__name__)
-
-    def _build_report_data(self, project_id=None, observation=None, **kwargs):
+    def _build_report_data(self, project_id=None, observation=None, date=None):
         """
         Construit les données JSON pour un rapport.
         """
@@ -17,40 +13,65 @@ class Report(_GankBoardBaseObject):
             data["project"] = project_id
         if observation is not None:
             data["observation"] = observation
-        data.update(kwargs)
+        if date is not None:
+            data["date"] = date
         return data
 
-    def delete(self, resource_id):
+    @classmethod
+    def delete(cls, resource_id):
         """
-        Supprime un rapport par son ID.
+        Supprime un rapport par son ID en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête DELETE pour le rapport avec l'ID {resource_id}")
+        response = cls.request(
             method="DELETE",
             endpoint=f"reports/{resource_id}"
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la suppression du rapport avec l'ID {resource_id}: {error_message}")
+            raise RuntimeError(f"Erreur lors de la suppression du rapport avec l'ID {resource_id}: {error_message}")
 
-    def modify(self, resource_id, project_id=None, observation=None):
+        logging.info(f"Rapport avec l'ID {resource_id} supprimé avec succès.")
+        return response
+
+    @classmethod
+    def modify(cls, resource_id, project_id=None, observation=None, date=None):
         """
-        Modifie un rapport existant par son ID.
+        Modifie un rapport existant par son ID en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête PATCH pour modifier le rapport avec l'ID {resource_id}")
+        response = cls.request(
             method="PATCH",
             endpoint=f"reports/{resource_id}",
-            json=self._build_report_data()
+            json=cls()._build_report_data(project_id=project_id, observation=observation, date=date)
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la modification du rapport avec l'ID {resource_id}: {error_message}")
+            raise RuntimeError(f"Erreur lors de la modification du rapport avec l'ID {resource_id}: {error_message}")
 
-    def create(self, project_id, observation='', **kwargs):
+        logging.info(f"Rapport avec l'ID {resource_id} modifié avec succès.")
+        return response
+
+    @classmethod
+    def create(cls, project_id, observation='', date=None):
         """
-        Crée un nouveau rapport.
+        Crée un nouveau rapport en utilisant la clé API globale.
         """
-        status_code, response = self.request(
+        logging.info(f"Envoi d'une requête POST pour créer un nouveau rapport")
+        response = cls.request(
             method="POST",
-            endpoint="reports",
-            json=self._build_report_data(project_id=project_id, observation=observation, **kwargs)
+            endpoint="reports/",
+            json=cls()._build_report_data(project_id=project_id, observation=observation, date=date)
         )
 
-        return status_code, response
+        if response is None or 'error' in response:
+            error_message = response.get('error', 'Erreur inconnue')
+            logging.error(f"Erreur lors de la création du rapport: {error_message}")
+            raise RuntimeError(f"Erreur lors de la création du rapport: {error_message}")
+
+        logging.info(f"Rapport pour le projet '{project_id}' créé avec succès.")
+        return response
