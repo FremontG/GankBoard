@@ -3,7 +3,7 @@ from ._GankBoardBaseObject import _GankBoardBaseObject
 
 class Report(_GankBoardBaseObject):
     
-    def _build_report_data(self, project_id=None, observation=None, date=None):
+    def _build_report_data(self, project_id, observation, date=None):
         """
         Construit les données JSON pour un rapport.
         """
@@ -25,7 +25,7 @@ class Report(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête DELETE pour le rapport avec l'ID {resource_id}")
         response = cls.request(
             method="DELETE",
-            endpoint=f"reports/{resource_id}"
+            endpoint=f"reports/{resource_id}/"
         )
 
         if response is None or 'error' in response:
@@ -44,7 +44,7 @@ class Report(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête PATCH pour modifier le rapport avec l'ID {resource_id}")
         response = cls.request(
             method="PATCH",
-            endpoint=f"reports/{resource_id}",
+            endpoint=f"reports/{resource_id}/",
             json=cls()._build_report_data(project_id=project_id, observation=observation, date=date)
         )
 

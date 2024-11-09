@@ -37,7 +37,7 @@ class Task(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête DELETE pour la tâche avec l'ID {resource_id}")
         response = cls.request(
             method="DELETE",
-            endpoint=f"tasks/{resource_id}"
+            endpoint=f"tasks/{resource_id}/"
         )
 
         if response is None or 'error' in response:
@@ -56,7 +56,7 @@ class Task(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête PATCH pour modifier la tâche avec l'ID {resource_id}")
         response = cls.request(
             method="PATCH",
-            endpoint=f"tasks/{resource_id}",
+            endpoint=f"tasks/{resource_id}/",
             json=cls()._build_task_data(project_id=project_id, name=name, description=description, dependencies=dependencies, parent_task=parent_task, sub_tasks=sub_tasks, **kwargs)
         )
 

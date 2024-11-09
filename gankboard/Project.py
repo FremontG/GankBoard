@@ -41,7 +41,7 @@ class Project(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête PATCH pour modifier le projet avec l'ID {resource_id}")
         response = cls.request(
             method="PATCH",
-            endpoint=f"projects/{resource_id}",
+            endpoint=f"projects/{resource_id}/",
             json=cls()._build_project_data(name=name, description=description, **kwargs)
         )
 
