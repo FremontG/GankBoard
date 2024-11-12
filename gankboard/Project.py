@@ -22,7 +22,7 @@ class Project(_GankBoardBaseObject):
         logging.info(f"Envoi d'une requête DELETE pour le projet avec l'ID {resource_id}")
         response = cls.request(
             method="DELETE",
-            endpoint=f"projects/{resource_id}"
+            endpoint=f"projects/{resource_id}/"
         )
 
         if response is None or 'error' in response:

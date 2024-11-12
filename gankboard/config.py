@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 # Variables globales pour stocker la clé API et l'URL
 _api_key = None
-_url = "http://fridmund-development.freeboxos.fr:8001/api"  # URL de base par défaut
+_url = "http://office.fridmund-development.fr:8001/api"  # URL de base par défaut
 
 def set_api_key(key):
     global _api_key
